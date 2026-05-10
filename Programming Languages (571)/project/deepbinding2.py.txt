@@ -1,0 +1,18 @@
+def A(x, P):
+    def B():
+        print(x)
+        P()
+    
+    def C():
+        print(x)
+    
+    if (x == 60):
+        A(1, B)
+    else:
+        P()
+    C()
+
+def D():
+    print(400)
+
+A(60, D)

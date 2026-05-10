@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+n=0
+first () {
+    echo "first: n = $n"
+    n=1 
+}
+second () {
+    echo "second: n = $n"
+    local n=2
+    first
+    echo "second: n = $n"
+}
+first
+second
+echo "main: n = $n"

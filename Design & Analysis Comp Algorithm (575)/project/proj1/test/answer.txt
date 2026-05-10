@@ -1,0 +1,84 @@
+compile and execute
+(.cpp/.c)
+make
+Or
+gcc(g++) p1.cpp -o program1
+./program1 -m ../p1testcase/m_10.txt -p ../p1_testcase/p_10.txt -o output_10.txt
+cat output_10.txt
+4 483 4 0.000093000
+testPlayerName0
+testPlayerName1
+testPlayerName2
+testPlayerName3
+6 469 4 0.000027000
+testPlayerName6
+testPlayerName7
+testPlayerName8
+testPlayerName9
+
+
+./program1 -p ../p1_testcase/p_20.txt -m ../p1_testcase/m_20.txt -o output_20.txt
+cat output_20.txt
+5 483 4 0.000095000
+testPlayerName0
+testPlayerName1
+testPlayerName2
+testPlayerName3
+15 1347 10 0.005603000
+testPlayerName7
+testPlayerName8
+testPlayerName9
+testPlayerName10
+testPlayerName12
+testPlayerName13
+testPlayerName14
+testPlayerName17
+testPlayerName18
+testPlayerName19
+
+
+./program1 -o output_30.txt -p ../p1_testcase/p_30.txt -m ../p1_testcase/m_30.txt
+cat output_30.txt
+16 1584 12 0.006320000
+testPlayerName0
+testPlayerName1
+testPlayerName2
+testPlayerName3
+testPlayerName7
+testPlayerName8
+testPlayerName9
+testPlayerName10
+testPlayerName11
+testPlayerName12
+testPlayerName13
+testPlayerName14
+20 2055 18 0.085265000
+testPlayerName0
+testPlayerName1
+testPlayerName2
+testPlayerName3
+testPlayerName5
+testPlayerName6
+testPlayerName7
+testPlayerName8
+testPlayerName9
+testPlayerName10
+testPlayerName11
+testPlayerName12
+testPlayerName13
+testPlayerName14
+testPlayerName15
+testPlayerName17
+testPlayerName18
+testPlayerName19
+
+
+
+(.java)
+The results should be the same.
+javac program1.java
+java program1 -o output_30.txt -p ../p1_testcase/p_30.txt -m ../p1_testcase/m_30.txt
+
+
+
+
