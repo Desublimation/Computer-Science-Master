@@ -1,0 +1,96 @@
+#lang racket/base
+; problem 1-a
+(define (funPower f n)
+  (if (= n 0)
+      (lambda (x) x)
+      (lambda (x)
+        (f ((funPower f (- n 1)) x)))
+  )
+)
+
+; problem 1-b
+(define (encode n)
+  (
+    lambda (f)
+    (
+      lambda (z)
+      (
+        if (= n 0) z (f (((encode (- n 1)) f) z))
+      )
+    )
+  )
+)
+
+; problem 1-c     
+(define (decode n)
+  (
+    (n (lambda (x) (+ x 1))) 0
+  )
+)
+
+; problem 1-d
+(define (MULT n1 n2)
+  (
+    lambda (f)
+    (
+      lambda (z)
+      (
+        (n1 (n2 f)) z
+      )
+    )
+  )
+)
+
+; problem 2     
+(define (dot l1 l2)
+ (
+   cond [(or (null? l1) (null? l2)) 0]
+        [else (+ (* (car l1) (car l2)) (dot (cdr l1) (cdr l2)))]
+ )
+)
+
+; problem 3
+(define (in? item lst)
+  (cond [(null? lst) #f]
+        [(equal? item (car lst)) #t]
+        [(list? (car lst)) (or (in? item (car lst)) (in? item (cdr lst)))]
+        [else (in? item (cdr lst))]
+  )
+)
+
+; problem 4
+(define (lstOddSum lst)
+  (cond [(null? lst) 0] 
+        [(null? (cdr lst)) (car lst)]     
+        [else (+ (car lst) (lstOddSum (cdr (cdr lst))))]
+  )
+)
+
+; problem 5-a
+(define (thres a b lst)
+  (filter (lambda (x) (and (>= x a) (<= x b))) lst)
+)
+
+; problem 5-b
+(define (trunc a b lst)
+  (map (lambda (x) (cond [(< x a) a]
+                         [(> x b) b]
+                         [else x]
+                    )
+        )
+       lst
+  )
+)
+
+; problem 5-c
+(define (leq lx ly)
+  (foldl (lambda (pair acc) 
+           (and acc (<= (car pair) (cdr pair))))
+         #t
+         (map cons lx ly))
+)
+
+; problem 5-d
+(define (dup lst)
+  (foldr (lambda (x acc) (cons x (cons x acc))) '() lst)
+)

@@ -1,0 +1,258 @@
+/**
+*  Homework Assignment 7
+*  Programming Languages
+*  CS571, Spring 2026
+*  Due: Friday, 5/1, 11:59 PM
+*/
+
+/* Instructions */
+
+/*
+   This section deals with general submission instructions. Use this
+   source file. You will be able to code in and run the file in the 
+   prolog interpreter directly.
+
+   This file is named hw7.txt because BrightSpace blocks uploading of .pl files.
+   You will likely need to rename it to hw7.pl in order to load it in a Prolog
+   interpreter, and then rename it back to hw7.txt in order to submit.
+
+   We will be using swipl for our prolog environment:
+   To (re)load this file, cd to its directory and run swipl. Then, 
+   in the prompt, type "[hw7]." On the lab computers, you can run swipl 
+   by typing "swipl".
+
+   cd PATH_TO_FILE_FOLDER
+   swipl
+   [hw7].
+
+   From then on you may execute queries (goals) in the prompt.
+   You should provide your answers in the designated spot. Once you have
+   added some code to the file, rerun "[hw7]." in the swipl prompt to reload.
+
+   In addition, there are unit tests for each problem. These are there to
+   help you better understand what the question asks for, as well as
+   check your code. They are included in our knowledge base as queries
+   and are initially commented out -- % is a Prolog line comment.
+   Lines marked as SUCCEED should be satisfied by your defined relation(s).
+   Lines marked as FAIL should not be satisfied.
+
+   After you have finished a problem and are ready to test, remove the
+   initial % for each test for the associated problem and reload the
+   assignment file ([hw7].). Each line should silently load and
+   succeed. If any line throws a WARNING, then you solution is not
+   correct. If you pass the tests there is a good chance that your code
+   is correct, but not guaranteed; the tests are meant as guided feedback
+   and are not a check for 100% correctness.
+
+*/
+
+/* Submission */
+
+/*
+   For this assignment, you must submit only the source file named "hw7.txt". 
+*/
+
+/* Problem 0 (not graded):
+   Indicate whether each of the following will unify or not.
+   If unification will succeed, indicate how each variable will be bound.
+   If unification will fail, briefly (a single phrase or sentence) explain why.
+   You may write your answers directly in this comment, or in another comment
+   below this one. THIS PROBLEM WILL APPEAR ON THE FINAL EXAM.
+   You are strongly encouraged to:
+     (a) first try and answer each problem by hand
+     (b) then check your answer using a prolog interpreter.
+
+   1) (T, T) = (B, C).
+   2) (t, t) = (B, C).
+   3) (T, T) = (b, c).
+   4) [H|T] = [1, 2, 3].
+   5) [H|T] = [1].
+   6) [H|T] = [].
+   7) f(1, X) = f(Y, 2).
+   8) r(1, X) = f(Y, 2).
+   9) r(1, 2) = r(1, 2, X).
+   10) f(g(X, Y), h(Y)) = f(g(r(T), 2), Z).
+*/
+
+/* Problem 0 Answer
+   1) Yes, T = B = C
+   2) Yes, B = C = t
+   3) No, because T would need to unify with b and c, but b and c can't unify
+      since they are symbols
+   4) Yes, H = 1, T = [2, 3]
+   5) Yes, H = 1, T = []
+   6) No, because [H|T] requires at least one element (the head) in the list
+   7) Yes, Y = 1, X = 2
+   8) No, because r and f are different symbols (the functors are different)
+   9) No, because the arities are differentiation
+   10) Yes, X = r(T), Y = 2, Z = h(Y) = h(2)
+*/
+
+/* Problem 1 [4pt]:
+The following are two basic predicates for list manipulation:
+my_first/2 and my_last/2. We may refer to a predicate by writings it
+as name/arity; hence, my_first/2 means a predicate named my_first with
+two arguments.
+
+my_first(X,Y) succeeds if X is the first element of list Y.
+my_last(X,Y) succeeds if X is the last element of list Y.
+
+Write definitions for my_first and my_last.
+*/
+
+/* Problem 1 Answer: */
+my_first(X, [X|_]).
+
+my_last(X, [X]).
+my_last(X, [_|T]) :-
+    my_last(X, T).
+
+/* Problem 1 Test: */
+%:- my_first(a, [a]). % SUCCEED
+%:- my_first(3, [3, 2, 1]). % SUCCEED
+%:- my_first(3, [4, 3, 2, 1]) -> fail ; true. % FAIL
+%:- my_last(a, [a]). % SUCCEED
+%:- my_last(1, [3, 2, 1]). % SUCCEED
+%:- my_last(1, [3, 2, 1, 0]) -> fail ; true. % FAIL
+
+
+/* Problem 2 [4pt]:
+   Write a predicate is_decreasing(X) that succeeds if X is a list of
+   decreasing numbers -- Each number is either the same or lower than
+   the preceding number.
+*/
+
+/* Problem 2 Answer */
+is_decreasing([]).
+is_decreasing([_]).
+is_decreasing([A,B|T]) :-
+    A >= B,
+    is_decreasing([B|T]).
+
+/* Problem 2 Test: */
+%:- is_decreasing([]).            % SUCCEED
+%:- is_decreasing([10]).          % SUCCEED
+%:- is_decreasing([10,9]).        % SUCCEED
+%:- is_decreasing([10,9,7]).      % SUCCEED
+%:- is_decreasing([10,9,7,7,2]).  % SUCCEED
+%:- is_decreasing([1,1,1,1,1]).   % SUCCEED
+
+%:- is_decreasing([10,9,7,9]) -> fail ; true.    % FAIL
+%:- is_decreasing([2,3,1]) -> fail ; true.       % FAIL
+%:- is_decreasing([1,2,3]) -> fail ; true.       % FAIL
+%:- is_decreasing([7,19])-> fail ; true.         % FAIL
+
+/* Problem 3 [4pt]:
+   Write a predicate element_at(X,Y,N) that succeeds if X is the Nth 
+   element of list Y. Y is 0-indexed.
+
+   NOTE: Don't worry about the error cases: i.e, N greater than the 
+   length of Y.  
+*/
+
+/* problem 3 Answer */
+element_at(X, [X|_], 0).
+element_at(X, [_|T], N) :-
+    N > 0,
+    N1 is N - 1,
+    element_at(X, T, N1).
+
+/* Problem 3 Test: */
+%:- element_at(3,[1,2,3],2).   % SUCCEED
+%:- element_at(1,[1,2,3],0).   % SUCCEED
+
+%:- element_at(1,[1,2,3],1) -> fail ; true.     % FAIL
+
+/* Problem 4 [4pt]:
+   Write a predicate insert_at(E,Y,N,Z) that succeeds if Z is the list Y 
+   with E inserted at index N -- Insert X at index N in Y.
+
+   NOTE: Don't worry about the error cases: i.e, N greater than the 
+   length of Y.  
+*/
+
+/* Problem 4 Answer */
+insert_at(E, Y, 0, [E|Y]).
+insert_at(E, [H|T], N, [H|Z]) :-
+    N > 0,
+    N1 is N - 1,
+    insert_at(E, T, N1, Z).
+
+/* Problem 4 Test: */
+%:- insert_at(3,[1,2,3],2,[1,2,3,3]).  % SUCCEED
+%:- insert_at(1,[1,2,3],0,[1,1,2,3]).  % SUCCEED
+%:- insert_at(a,[1,2,3],1,[1,a,2,3]).  % SUCCEED
+
+%:- insert_at(1,[1,2,3],0,[1,2,3]) -> fail ; true.    % FAIL
+
+
+/* Problem 5 [4pt]:
+   Write a predicate delete_at(E,Y,N,Z) that succeeds if Z is the list Y 
+   with E delete at index N -- Delete E at index N in Y. YOU MUST USE the 
+   predicate defined in the above problem to solve this problem.
+
+   NOTE: Don't worry about the error cases: i.e, N greater than the 
+   length of Z.  
+*/
+
+/* Problem 5 Answer */
+delete_at(E, Y, N, Z) :-
+    insert_at(E, Z, N, Y).
+
+/* Problem 5 Test: */
+
+%:- delete_at(3,[1,2,3,3],2,[1,2,3]).  % SUCCEED
+%:- delete_at(1,[1,1,2,3],0,[1,2,3]).  % SUCCEED
+%:- delete_at(a,[1,a,2,3],1,[1,2,3]).  % SUCCEED
+
+%:- delete_at(1,[1,2,3],0,[1,2,3]) -> fail ; true.    % FAIL
+
+
+
+/* Problem 6 [4pt]:
+   Write a predicate sumlist(List,Sum) which succeeds if Sum is the total value
+   of all the elements of List. This will be a top down recursion.
+   The recursion clause will add the current value to the result of the sum
+   of the rest of the list.
+   We have already provided the base case for this predicate underneath
+   'Problem 6 Answer'. You just need to add the recursive clause.
+*/
+
+/* Problem 6 Answer */
+sumlist([], 0).
+sumlist([H|T], Sum) :-
+    sumlist(T, Rest),
+    Sum is H + Rest.
+
+
+/* Problem 6 Test */
+%:- sumlist([], 0).
+%:- sumlist([], 1) -> fail ; true.
+%:- sumlist([1,2,3,4], 10).
+%:- sumlist([1], 1).
+
+/* Problem 7 [4pt]:
+   Write the predicate sumlist2(List,Sum) which succeeds if Sum is the sum total
+   of all the elements of List. Instead of adding the current value to the
+   result of the sum of the tail, you will calculate the partial sum of the all
+   the elements you have reached so far. You will need an extra argument to
+   store the partial sum, so you will write an auxilitary predicate sumlist2/3
+   to handle the extra argument.
+*/
+
+/* Problem 7 Answer */
+
+sumlist2(List, Sum) :-
+    sumlist2(List, 0, Sum).
+
+sumlist2([], Acc, Acc).
+sumlist2([H|T], Acc, Sum) :-
+    Acc1 is Acc + H,
+    sumlist2(T, Acc1, Sum).
+
+/* Problem 7 Test */
+
+%:- sumlist2([], 0).
+%:- sumlist2([], 1) -> fail ; true.
+%:- sumlist2([1,2,3,4], 10).
+%:- sumlist2([1], 1).
