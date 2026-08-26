@@ -6,13 +6,13 @@
 
 
 
-==================================
+=========================================
 
-|regular add new in git repository|
+###### regular add new in git repository
 
-===================================
+=========================================
 
-(1) git add . 
+(1) git add .
 
 (2) git commit -m "{update notes}"
 
@@ -20,13 +20,13 @@
 
 
 
-=====================
+========================
 
-|git sparse-checkout|
+###### git sparse-checkout
 
-=====================
+###### ===================
 
-**\*NOTE**: this is a Git command used to reduce your local working directory to only a specific subset of tracked files or folders. 
+**\*NOTE**: this is a Git command used to reduce your local working directory to only a specific subset of tracked files or folders.
 
 
 
@@ -46,5 +46,13 @@
 
 
 
-**NOTICE:** After done the sparse checkout, you can update new files with normal procedure refer to "regular add new in git repository" 
+**NOTICE:** After done the sparse checkout, you can update new files with normal procedure refer to "regular add new in git repository"
+
+
+
+**FOUND:** sparse-checkout its own cannot real save memory for you local machine while remain files on the repository. It just make the files or folders unseen to you.
+
+
+
+##### **more procedures needed to be continues ...**
 
